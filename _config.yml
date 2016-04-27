@@ -72,7 +72,7 @@ theme: maupassant
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/bafu/bafu.github.io.git
+  repo: https://github.com/DT42/dt42.github.io.git
   branch: master
 
 # Disqus
