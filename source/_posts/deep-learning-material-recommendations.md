@@ -1,10 +1,8 @@
 ---
-title: Deep Learning 學習素材推薦
+title: 深度學習(Deep Learning)自學素材推薦
 date: 2016-04-27 16:00:56
-tags: deep-learning, chinese
+tags: deep-learning, mandarin-chinese
 ---
-
-## 深度學習(Deep Learning)自學素材推薦
 
 網路上關於深度學習的資料實在太多了，這裡列出的只是我個人讀過覺得相當不錯的資源，看不夠的話請右轉 Google 搜尋「Deep Learning」，絕對能滿足絕大部分的需求。如果有好的文章卻被漏掉了，也非常歡迎留言推薦，一定儘快補上。
 ### 機器學習
