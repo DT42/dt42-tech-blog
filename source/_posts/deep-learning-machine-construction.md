@@ -328,6 +328,7 @@ cuda-install-samples-7.5.sh ~/
 
 在子目錄下找到 deviceQuery 這支程式，它可以測試是否 CUDA 正確安裝、可正常運作。CUDA 更進一步的資訊，請參閱 [3]。
 
+
 # 記憶體頻寬測試
 
 CUDA 範例程式裡，有一支程式 bandwidthTest 可以測試 GPU 與系統間資料的傳輸速度。PCIe 3.0 x16 的理論值接近 16GB/s。但下面數據顯示，GPU 與系統記憶體之間的傳輸速度，理論值的一半都不到，只有 6GB/s。
@@ -367,6 +368,41 @@ Result = PASS
     LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk-
             ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
     LnkSta: Speed 2.5GT/s, Width x8, TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+```
+
+
+# 省電設定
+
+正常情況下，NVIDIA TITAN X 在閒置時應該會處於省電的模式。但可能因為驅動程式有 bug，以致電腦開機後，顯示卡就一直處於高頻運轉的狀況。如此會增加不少電費開銷。
+
+
+下面指令可以查看顯示卡目前的運作情形：
+
+```
+nvidia-smi -q -d PERFORMANCE
+```
+
+這是一個有 bug 情況下的結果：
+
+```
+GPU 0000:05:00.0
+    Performance State               : P0
+    Clocks Throttle Reasons
+        Idle                        : Not Active
+        Applications Clocks Setting : Active
+        SW Power Cap                : Not Active
+        HW Slowdown                 : Not Active
+        Unknown                     : Not Active
+```
+
+Performance State = P0，表示目前是在高頻運轉的狀態。我們希望閒置 (Idle) 時 Clock Throttle 為 Active 且 Performance State 降至 P8 以下。將下面指令寫入 /etc/rc.local 可以解決這個問題。
+
+```
+# DON'T LET NVIDIA TITAN X BURN OUR MONEY AT IDLE
+nvidia-smi -pm ENABLED             # persistent mode 
+nvidia-smi -acp UNRESTRICTED       # allow all users to change clock speed
+nvidia-smi -ac 405,135             # set the application clock to lowest speed. it changes current clock speed as well.
+nvidia-smi -rac                    # reset the application clock so that we still get full speed when applications run
 ```
 
 
