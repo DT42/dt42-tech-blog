@@ -12,15 +12,15 @@ tags: ubuntu, cuda, computer-building, chinese
 參考NVIDIA DIGITS DEVBOX的設計 [1]，建購二台深度學習的高性能實驗環境。預算總額約15萬台幣。
 
 主機板：ASUS X99-E WS(*2)，這塊主機板支援最多 PCIe 3.0 x16 四張顯示卡連結 (NVIDIA SLI)，可以提供良好的擴充性。如果有遠端管理的需求，ASUS X99-WS IPMI 也可以考慮。
-![x99e-ws](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/x99e-ws.png)
+![x99e-ws](https://drive.google.com/uc?id=0B3Q18ixvA3f3VnlNWFlxWW1ZRU0)
 
 GPU：GeForce GTX TITAN X 12GB(*2) ，Maxwell 系列省電且效能更好，單卡耗電約 250 瓦。因為預算關係，只能買二張卡，每台電腦各一，未來有需求時再加購。
-![titanx](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/gigabyte_geforce_gtx_titan_x.jpg)
+![titanx](https://drive.google.com/uc?id=0B3Q18ixvA3f3RXRYSlFJUEViQlE)
 
 CPU：Intel Core i7-5930K(*2)，6核心，如選購其他型號，需注意 CPU 是否支援 40 PCIe 通道。耗電約 140 瓦。
 
 CPU散熱：Corsair Hydro H60(*2)，單風扇水冷系統。
-![hydro-h60](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/corsair_hydro_h60.png)
+![hydro-h60](https://drive.google.com/uc?id=0B3Q18ixvA3f3YmY0bW5wSm1lVmM)
 
 記憶體：32GB(每台)，DDR4-2133 Micron 16GB*2(*2)。記憶體採購需參考主機板廠商的QVL清單，以免買到相容性不佳的記憶體。
 
@@ -29,10 +29,10 @@ SSD：EZLINK CV-6 512G SATA3 (*2) 作為系統碟。M.2 Kingston HyperX Predator
 硬碟：Seagate 3TB 3.5 吋 SATA3 (ST3000VN0001) 企業級 NAS 碟 3個，組成 RAID5 陣列，可用空間 6 TB。
 
 機殼：Thermaltake Core X9 平躺式機殼 (*2)，最下層放置電源供應器及硬碟，上層放置主機板、CPU、GPU，分層管理可以避免硬碟受到GPU散發的高熱影響。上層具備足夠的空間可讓風流順暢，用不到的 2.5/3.5 吋硬碟架可以移除來換取機箱空間，進一步提升散熱效能。前置 200mm 超大靜音風扇，後置 120mm 標準風扇。上方及側面支援多組風扇支架，未來增購 GPU 時也有彈性再加強散熱。
-![thermaltake-case](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/thermaltakecase.jpg)
+![thermaltake-case](https://drive.google.com/uc?id=0B3Q18ixvA3f3QVp4d3FJMUlPelE)
 
 電源供應器：振華 Leadex 850W (*2)，通過 80PLUS 認證，在各種負載下都有90%左右的效率。經費考量下，我們沒有選擇 1600W，但 850W 有空間讓我們再加一張GPU卡。
-![leadex-850w](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/Leadex-Platinum-850W.jpg)
+![leadex-850w](https://drive.google.com/uc?id=0B3Q18ixvA3f3SDZ0OWEtS0NuNTg)
 
 網路：預算考量下，原來考慮的 Infiniband 網路就沒列入了。ASUS X99-E WS 主機板內建雙埠 1000Mb ethernet 可以利用。
 
@@ -51,7 +51,7 @@ SSD：EZLINK CV-6 512G SATA3 (*2) 作為系統碟。M.2 Kingston HyperX Predator
 
 # 儲存系統規畫
 
-![storage-hierarchy](https://googledrive.com/host/0B3Q18ixvA3f3TlZHVnlqNU83X2c/storage-hierarchy.png)
+![storage-hierarchy](https://drive.google.com/uc?id=0B3Q18ixvA3f3a3NuWExucHlUTVE)
 最底層 3 個硬碟，組成一個 R5 的磁碟陣列，即使壞掉一個硬碟，資料也不會遺失。但會有相當一個硬碟的空間儲存 parity，實際可用空間只 3TB+3TB=6TB。md-raid5 的 6TB 會與 EZLINK SATA3 SSD 的 512GB，再組成一個 lvm volume group。將 SSD 空間與硬碟空間劃分在一起的原因是希望在 SATA3 SSD 上的 volume 也能被 lvm snapshot 備份到硬碟上。lvhome 規劃約2.5T空間，剩餘大部份的空間留做未來彈性使用；除了做為 snapshot 空間，也可以在 lvhome 空間不夠時分給它。SATA3 SSD 上除了 EFI boot partition，所有空間都分給 lvroot。
 
 安裝 mdadm，它是 Linux software RAID 的管理程式。下面指令會將三個硬碟組成一個 R5 的磁碟陣列。
